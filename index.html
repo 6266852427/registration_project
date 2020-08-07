@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Registration with jQuery, AJAX and PHP</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css" integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I" crossorigin="anonymous">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.js" integrity="sha512-WNLxfP/8cVYL9sj8Jnp6et0BkubLP31jhTG9vhL/F5uEZmg5wEzKoXp1kJslzPQWwPT1eyMiSxlKCgzHLOTOTQ==" crossorigin="anonymous"></script>
+
+	<style type="text/css">
+		.border-rg{
+			
+			padding: 20px;
+			display: inline-block;
+			margin-top: 50px;
+			position: absolute;
+			margin-left: 10%;
+		}
+		.border-lg{
+			border: 1px solid black;
+			padding: 20px;		
+			margin-top: 20vh;
+			float: right;
+			margin-right: 10%;
+		}
+		.head2{
+			width: 75%;
+			text-align: center;
+            color: #fff;
+		}
+	</style>	
+</head>
+<body>
+
+	<div class="container">
+		<div class="border-rg w-50">
+			<h2 class="head2 mt-2 bg-info p-2">User Registration Form</h2>
+			<form class="mt-4" id="register-form" action="insert.php" method="POST" enctype="multipart/form-data">
+				<label class="form-level" for="fname">First Name:</label>
+				<input class="form-control w-75 mt-2" type="text" id="fname" name="first_name" required>
+				<label class="form-level mt-4" for="lname">Last Name:</label>
+				<input class="form-control w-75 mt-2" type="text" id="lname" name="last_name" required>
+				<label class="form-level mt-4" for="email">Email Address:</label>
+				<input class="form-control w-75 mt-2" type="email" id="email" name="email_id" required>
+				<label class="form-level mt-4" for="password">Password:</label>
+				<input class="form-control w-75 mt-2" type="password" id="password" name="pass" required>
+				<label class="form-level mt-4" for="confirm_password">Confirm Password:</label>
+				<input class="form-control w-75 mt-2" type="password" id="confirm_password" name="confirm_password" required>
+				<div id="showErrorPwd"></div>
+				<div class="form-file w-75 mt-4">
+					 <input type="file" class="form-file-input" id="file" name="file">
+					  <label class="form-file-label" for="customFile">
+						<span class="form-file-text">Choose image file...</span>
+						<span class="form-file-button">Upload Image</span>
+					</label>
+				</div>
+				<button class="btn btn-success mt-4" id="submit-id" type="submit">Register</button>
+			</form>
+		</div> 
+		<div class="border-lg w-25">
+			<h2 class="mt-2">Login Here :</h2>
+			<form class="mt-4" id="login-id" action="home.php" method="POST">
+				<label class="form-level mt-4" for="email">Email Address:</label>
+				<input class="form-control mt-2" type="email" id="email-lg" name="email-lg">
+				<label class="form-level mt-4" for="password">Password:</label>
+				<input class="form-control mt-2" type="password" id="password-lg" name="password-lg">
+				<button class="btn btn-primary mt-3" id="login" type="submit">Login</button>
+			</form>
+		</div>
+	</div>
+
+	<!-- Jquery and Bootstrap v5 CDN -->
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js" integrity="sha384-oesi62hOLfzrys4LxRF63OJCXdXDipiYWBnvTl9Y9/TRlw5xlKIEHpNyvvDShgf/" crossorigin="anonymous"></script>
+	<script>
+		$(document).ready(function(){
+           // Checking comfirm_password
+              if('#comfirm_password').keyup(function(){
+                 var pwd = $('#password').val();
+                 var cpwd = $('#confirm_password').val();
+
+                 if(cpwd != pwd){
+                 	$('#showErrorPwd').html("**Password are not matching");
+                 	$('#showErrorPwd').css('color','red');
+                 	return false;
+                 }else{
+                 	$('#showErrorPwd').html('');
+                 	return true;
+                 }
+              });
+
+			$("#register-form").on("click", function(e){
+				e.preventDefault();
+				var form = $('#register-form');
+				$.ajax({
+					url:form.attr("action"),
+					type"POST",
+					data:$("#register-form input").serialize(),
+					success:function(data){
+						if(data==1){
+							$("#register-form").trigger("reset");
+						}else{
+							alert("Can't save records.");
+						}
+					}
+				});
+			})
+
+			$("#login-id").on("click", function(e){
+				e.preventDefault();
+				var form_lg = $('#login-id');
+				$.ajax({
+					url:form_lg.attr("action"),
+					type"POST",
+					data:$("#login-id input").serialize(),
+					success:function(data){
+						if(data==1){
+
+						}else{
+							alert("Login failed");
+						}
+					}
+				});
+			})
+		});
+	</script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.js" integrity="sha512-WNLxfP/8cVYL9sj8Jnp6et0BkubLP31jhTG9vhL/F5uEZmg5wEzKoXp1kJslzPQWwPT1eyMiSxlKCgzHLOTOTQ==" crossorigin="anonymous"></script>
+</body>
+</html>
